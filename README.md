@@ -12,7 +12,7 @@ Status  Time    Found   Path
 ...
 ```
 
-![Output preview as described above](./assets/preview.png)
+![Output preview as described above](https://raw.githubusercontent.com/franciscop/check-my-links/HEAD/assets/preview.png)
 
 Features:
 
@@ -53,10 +53,10 @@ check-my-links --version
 
 Removes the header, the colors and the spaces around it. Ideal for further CLI processing:
 
-![](./assets/plain.png)
+![Plain flag example](https://raw.githubusercontent.com/franciscop/check-my-links/HEAD/assets/plain.png)
 
 ## --links
 
 Adds the link information to help debug where the broken links comes from:
 
-![](./assets/links.png)
+![Links flag example](https://raw.githubusercontent.com/franciscop/check-my-links/HEAD/assets/links.png)
