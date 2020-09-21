@@ -1,14 +1,12 @@
 {
   "name": "check-my-links",
   "version": "1.0.0",
-  "description": "",
+  "description": "A small CLI tool to make sure your website doesn't have any 404s or 500s",
   "main": "index.js",
   "bin": {
     "check-my-links": "index.js"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "Francisco Presencia <public@francisco.io> (https://francisco.io/)",
   "license": "MIT",
@@ -16,7 +14,6 @@
     "axios": "^0.20.0",
     "cheerio": "^1.0.0-rc.3",
     "get-stdin": "^8.0.0",
-    "meow": "^7.1.1",
-    "node-fetch": "^2.6.0"
+    "meow": "^7.1.1"
   }
 }

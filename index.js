@@ -55,16 +55,17 @@ const queue = new Queue(async (url, queue) => {
 
 const cli = meow(
   `
-  Usage
-    $ check-my-links <url>
+Usage
+  $ check-my-links <url>
 
-  Options
-    --links, -l   Show on the scraper what new links are added in a given page
-    --plain, -p   No headers or URL are shown, only the results
+Options
+  --links, -l   Show on the scraper what new links are added in a given page
+  --plain, -p   No headers or URL are shown, only the results
 
-  Examples
-    $ check-my-links francisco.io
-    $ check-my-links francisco.io --links
+Examples
+  $ check-my-links francisco.io
+  $ check-my-links francisco.io --links
+  $ echo "francisco.io" | check-my-links --plain | grep 404
 `,
   {
     flags: {
@@ -89,15 +90,16 @@ const cli = meow(
   // Default to HTTPS if no protocol is given. To force e.g. localhost:3000, you
   // can pass `http://localhost:3000/` as the url to scrape
   const base = /^https?:\/\//.test(domain) ? domain : "https://" + domain;
-  if (!cli.flags.plain) {
+  const isPlain = cli.flags.plain;
+  if (!isPlain) {
     console.log(`\x1B[1m${base}\x1B[22m 🔎`);
     console.log(`Status\tTime\tFound\tPath`);
   }
   for await (let { url, status, time, links, error } of queue.start(base)) {
-    const color = cli.flags.plain ? "" : error ? "\x1b[41m" : "\x1b[42m";
-    const gray = cli.flags.plain ? "" : "\x1b[2m";
-    const clear = cli.flags.plain ? "" : "\x1b[0m";
-    const space = cli.flags.plain ? "" : " ";
+    const color = isPlain ? "" : error ? "\x1b[41m" : "\x1b[42m";
+    const gray = isPlain ? "" : "\x1b[2m";
+    const clear = isPlain ? "" : "\x1b[0m";
+    const space = isPlain ? "" : " ";
     const statusOut = `${color}${space}${status}${space}${clear}`;
     const timeOut = `${gray}${time / 1000}s${clear}`;
     const linksOut = `${gray}+${links.length}${clear}`;

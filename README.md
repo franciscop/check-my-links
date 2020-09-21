@@ -22,6 +22,11 @@ Features:
 - Use the flag `--plain` for even better and easier CLI usage. You can pipe that out easily.
 - Use the flag `--links` for more insight of where the broken links come from.
 
+```bash
+# Works great with other UNIX tools; e.g. print only the 404s
+echo "francisco.io" | check-my-links --plain | grep 404
+```
+
 ## Getting started
 
 Install the library with npm:
