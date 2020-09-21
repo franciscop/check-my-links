@@ -1,6 +1,6 @@
 {
   "name": "check-my-links",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A small CLI tool to make sure your website doesn't have any 404s or 500s",
   "main": "index.js",
   "bin": {
