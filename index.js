@@ -1,12 +1,13 @@
 #! /usr/bin/env node
 
-const meow = require("meow");
-const axios = require("axios");
-const cheerio = require("cheerio");
-const getStdin = require("get-stdin");
-const { performance } = require("perf_hooks");
+import meow from "meow";
+import fch from "fch";
+import * as cheerio from "cheerio";
+import getStdin from "get-stdin";
+import nocolor from "nocolor";
+import { performance } from "node:perf_hooks";
 
-const Queue = require("./queue");
+import Queue from "./queue.js";
 
 const find_links = (html, url) => {
   const $ = cheerio.load(html);
@@ -41,13 +42,13 @@ const find_links = (html, url) => {
 const queue = new Queue(async (url, queue) => {
   const start = performance.now();
   try {
-    const { data: text, status } = await axios.get(url);
+    const { body: text, status } = await fch(url, { output: "response" });
     const links = find_links(text, url);
     queue.add(...links);
     const time = Math.round(performance.now() - start);
     return { url, text, links, status, time };
   } catch (error) {
-    const status = error.response ? error.response.status : error.code;
+    const status = error.response?.status ?? error.cause?.code ?? error.code;
     const time = Math.round(performance.now() - start);
     return { url, text: "", links: [], error, status, time };
   }
@@ -68,14 +69,15 @@ Examples
   $ echo "francisco.io" | check-my-links --plain | grep 404
 `,
   {
+    importMeta: import.meta,
     flags: {
       links: {
         type: "boolean",
-        alias: "l"
+        shortFlag: "l"
       },
       plain: {
         type: "boolean",
-        alias: "p"
+        shortFlag: "p"
       }
     }
   }
@@ -92,13 +94,13 @@ Examples
   const base = /^https?:\/\//.test(domain) ? domain : "https://" + domain;
   const isPlain = cli.flags.plain;
   if (!isPlain) {
-    console.log(`\x1B[1m${base}\x1B[22m 🔎`);
+    console.log(nocolor("{bright}") + base + nocolor("{/}") + " 🔎");
     console.log(`Status\tTime\tFound\tPath`);
   }
   for await (let { url, status, time, links, error } of queue.start(base)) {
-    const color = isPlain ? "" : error ? "\x1b[41m" : "\x1b[42m";
-    const gray = isPlain ? "" : "\x1b[2m";
-    const clear = isPlain ? "" : "\x1b[0m";
+    const color = isPlain ? "" : nocolor(error ? "{bgred}" : "{bggreen}");
+    const gray = isPlain ? "" : nocolor("{dim}");
+    const clear = isPlain ? "" : nocolor("{/}");
     const space = isPlain ? "" : " ";
     const statusOut = `${color}${space}${status}${space}${clear}`;
     const timeOut = `${gray}${time / 1000}s${clear}`;

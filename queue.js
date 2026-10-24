@@ -27,4 +27,4 @@ Queue.prototype.start = async function*(item) {
   }
 };
 
-module.exports = Queue;
+export default Queue;
