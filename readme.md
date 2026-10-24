@@ -1,4 +1,4 @@
-# Check my links
+# Check my links [![npm install check-my-links](https://img.shields.io/badge/npm%20install-check--my--links-blue.svg)](https://www.npmjs.com/package/check-my-links)
 
 A small CLI tool to make sure your website doesn't have any 404s or 500s:
 
