@@ -15,14 +15,14 @@ const find_links = (html, url) => {
   $("a").each(function(i, link) {
     const href = $(link).attr("href");
     if (!href) return;
-    if (/^mailto\:/.test(href)) return;
+    if (href.startsWith("mailto:")) return;
     if (/^https?:/.test(href)) {
       // Only if it's a part of it
       if (url === href.slice(0, url.length)) {
         links.push(href);
       }
       // Absolute paths; join them with the base URL
-    } else if (/^\//.test(href)) {
+    } else if (href.startsWith("/")) {
       const base = url
         .split("/")
         .slice(0, 3)
@@ -43,7 +43,7 @@ const queue = new Queue(async (url, queue) => {
   try {
     const { data: text, status } = await axios.get(url);
     const links = find_links(text, url);
-    const newLinks = queue.add(...links);
+    queue.add(...links);
     const time = Math.round(performance.now() - start);
     return { url, text, links, status, time };
   } catch (error) {
